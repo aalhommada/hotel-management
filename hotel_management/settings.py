@@ -11,17 +11,19 @@ DEBUG = os.getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
 INSTALLED_APPS = [
+    'unfold',  # Must be first
+    'unfold.contrib.filters',  
+    'unfold.contrib.forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bookings'
+    'compressor',  # Must be after staticfiles
+    'bookings',
 ]
 
 MIDDLEWARE = [
@@ -39,7 +41,7 @@ ROOT_URLCONF = 'hotel_management.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -54,7 +56,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hotel_management.wsgi.application'
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -62,6 +63,7 @@ DATABASES = {
     }
 }
 
+# Uncomment this when you're ready to use CustomUser
 # AUTH_USER_MODEL = 'bookings.CustomUser'
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -79,16 +81,71 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Unfold settings
+UNFOLD = {
+    "SITE_TITLE": "Hotel Management",
+    "SITE_HEADER": "Hotel Management System",
+    "SITE_URL": "/",
+    "SITE_ICON": None,
+    "DASHBOARD_CALLBACK": None,
+    "LOGIN": {
+        "image": None,
+        "redirect_after": "/admin/",
+    },
+    "STYLES": [],
+    "SCRIPTS": [],
+    "COLORS": {
+        "primary": {
+            "50": "250 245 255",
+            "100": "243 232 255",
+            "200": "233 213 255",
+            "300": "216 180 254",
+            "400": "192 132 252",
+            "500": "168 85 247",
+            "600": "147 51 234",
+            "700": "126 34 206",
+            "800": "107 33 168",
+            "900": "88 28 135",
+            "950": "59 7 100",
+        },
+    },
+    "TABS": [],
+}
 
+# Internationalization
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
+# Static files configuration
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 
-STATIC_URL = 'static/'
+# Updated staticfiles finders
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+# Compressor settings
+COMPRESS_ENABLED = True
+COMPRESS_ROOT = STATIC_ROOT
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Admin customization
+ADMIN_SITE_TITLE = "Hotel Management System"
+ADMIN_SITE_HEADER = "Hotel Management Administration"
+ADMIN_INDEX_TITLE = "Dashboard"

@@ -34,9 +34,32 @@ db.sqlite3
 db.sqlite3-journal
 media/
 
+# Static files
+staticfiles/
+static/CACHE/
+*.css.map
+static/src/output.css
+
 # IDE specific files
 .idea/
 .vscode/
 *.swp
 *.swo
 .DS_Store
+
+# Node
+node_modules/
+package-lock.json
+
+# Compiled translations
+*.mo
+*.pot
+
+# Coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+coverage.xml
+*.cover
