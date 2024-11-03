@@ -13,96 +13,369 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('auth', '0012_alter_user_first_name_max_length'),
+        ("auth", "0012_alter_user_first_name_max_length"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Room',
+            name="Room",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, verbose_name='Room Name')),
-                ('room_type', models.CharField(choices=[('single', 'Single'), ('double', 'Double'), ('suite', 'Suite'), ('family', 'Family')], max_length=10, verbose_name='Room Type')),
-                ('capacity_adults', models.IntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(6)], verbose_name='Adult Capacity')),
-                ('capacity_children', models.IntegerField(default=0, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(4)], verbose_name='Children Capacity')),
-                ('price_per_night', models.DecimalField(decimal_places=2, max_digits=10, validators=[django.core.validators.MinValueValidator(0)], verbose_name='Price per Night')),
-                ('description', models.TextField(verbose_name='Description')),
-                ('amenities', models.JSONField(default=dict, verbose_name='Amenities')),
-                ('floor', models.IntegerField(validators=[django.core.validators.MinValueValidator(0)], verbose_name='Floor Number')),
-                ('room_number', models.CharField(max_length=10, unique=True, verbose_name='Room Number')),
-                ('is_active', models.BooleanField(default=True, verbose_name='Is Active')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created At')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated At')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100, verbose_name="Room Name")),
+                (
+                    "room_type",
+                    models.CharField(
+                        choices=[
+                            ("single", "Single"),
+                            ("double", "Double"),
+                            ("suite", "Suite"),
+                            ("family", "Family"),
+                        ],
+                        max_length=10,
+                        verbose_name="Room Type",
+                    ),
+                ),
+                (
+                    "capacity_adults",
+                    models.IntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(6),
+                        ],
+                        verbose_name="Adult Capacity",
+                    ),
+                ),
+                (
+                    "capacity_children",
+                    models.IntegerField(
+                        default=0,
+                        validators=[
+                            django.core.validators.MinValueValidator(0),
+                            django.core.validators.MaxValueValidator(4),
+                        ],
+                        verbose_name="Children Capacity",
+                    ),
+                ),
+                (
+                    "price_per_night",
+                    models.DecimalField(
+                        decimal_places=2,
+                        max_digits=10,
+                        validators=[django.core.validators.MinValueValidator(0)],
+                        verbose_name="Price per Night",
+                    ),
+                ),
+                ("description", models.TextField(verbose_name="Description")),
+                ("amenities", models.JSONField(default=dict, verbose_name="Amenities")),
+                (
+                    "floor",
+                    models.IntegerField(
+                        validators=[django.core.validators.MinValueValidator(0)],
+                        verbose_name="Floor Number",
+                    ),
+                ),
+                (
+                    "room_number",
+                    models.CharField(
+                        max_length=10, unique=True, verbose_name="Room Number"
+                    ),
+                ),
+                (
+                    "is_active",
+                    models.BooleanField(default=True, verbose_name="Is Active"),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Created At"),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="Updated At"),
+                ),
             ],
             options={
-                'verbose_name': 'Room',
-                'verbose_name_plural': 'Rooms',
-                'ordering': ['room_number'],
+                "verbose_name": "Room",
+                "verbose_name_plural": "Rooms",
+                "ordering": ["room_number"],
             },
         ),
         migrations.CreateModel(
-            name='CustomUser',
+            name="CustomUser",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
-                ('username', models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150, unique=True, validators=[django.contrib.auth.validators.UnicodeUsernameValidator()], verbose_name='username')),
-                ('first_name', models.CharField(blank=True, max_length=150, verbose_name='first name')),
-                ('last_name', models.CharField(blank=True, max_length=150, verbose_name='last name')),
-                ('email', models.EmailField(blank=True, max_length=254, verbose_name='email address')),
-                ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
-                ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
-                ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('role', models.CharField(choices=[('admin', 'Admin'), ('manager', 'Manager'), ('team', 'Team'), ('customer', 'Customer')], default='customer', max_length=10, verbose_name='Role')),
-                ('phone', models.CharField(blank=True, max_length=15, verbose_name='Phone Number')),
-                ('address', models.TextField(blank=True, verbose_name='Address')),
-                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='custom_user_set', related_query_name='custom_user', to='auth.group', verbose_name='groups')),
-                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='custom_user_set', related_query_name='custom_user', to='auth.permission', verbose_name='user permissions')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                (
+                    "is_superuser",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates that this user has all permissions without explicitly assigning them.",
+                        verbose_name="superuser status",
+                    ),
+                ),
+                (
+                    "username",
+                    models.CharField(
+                        error_messages={
+                            "unique": "A user with that username already exists."
+                        },
+                        help_text="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                        max_length=150,
+                        unique=True,
+                        validators=[
+                            django.contrib.auth.validators.UnicodeUsernameValidator()
+                        ],
+                        verbose_name="username",
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="first name"
+                    ),
+                ),
+                (
+                    "last_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="last name"
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        blank=True, max_length=254, verbose_name="email address"
+                    ),
+                ),
+                (
+                    "is_staff",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates whether the user can log into this admin site.",
+                        verbose_name="staff status",
+                    ),
+                ),
+                (
+                    "is_active",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
+                        verbose_name="active",
+                    ),
+                ),
+                (
+                    "date_joined",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now, verbose_name="date joined"
+                    ),
+                ),
+                (
+                    "role",
+                    models.CharField(
+                        choices=[
+                            ("admin", "Admin"),
+                            ("manager", "Manager"),
+                            ("team", "Team"),
+                            ("customer", "Customer"),
+                        ],
+                        default="customer",
+                        max_length=10,
+                        verbose_name="Role",
+                    ),
+                ),
+                (
+                    "phone",
+                    models.CharField(
+                        blank=True, max_length=15, verbose_name="Phone Number"
+                    ),
+                ),
+                ("address", models.TextField(blank=True, verbose_name="Address")),
+                (
+                    "groups",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="The groups this user belongs to. A user will get all permissions granted to each of their groups.",
+                        related_name="custom_user_set",
+                        related_query_name="custom_user",
+                        to="auth.group",
+                        verbose_name="groups",
+                    ),
+                ),
+                (
+                    "user_permissions",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="Specific permissions for this user.",
+                        related_name="custom_user_set",
+                        related_query_name="custom_user",
+                        to="auth.permission",
+                        verbose_name="user permissions",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'User',
-                'verbose_name_plural': 'Users',
+                "verbose_name": "User",
+                "verbose_name_plural": "Users",
             },
             managers=[
-                ('objects', django.contrib.auth.models.UserManager()),
+                ("objects", django.contrib.auth.models.UserManager()),
             ],
         ),
         migrations.CreateModel(
-            name='Booking',
+            name="Booking",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('check_in', models.DateField(verbose_name='Check-in Date')),
-                ('check_out', models.DateField(verbose_name='Check-out Date')),
-                ('num_adults', models.IntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(6)], verbose_name='Number of Adults')),
-                ('num_children', models.IntegerField(default=0, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(4)], verbose_name='Number of Children')),
-                ('total_price', models.DecimalField(decimal_places=2, max_digits=10, validators=[django.core.validators.MinValueValidator(0)], verbose_name='Total Price')),
-                ('status', models.CharField(choices=[('pending', 'Pending'), ('confirmed', 'Confirmed'), ('cancelled', 'Cancelled'), ('completed', 'Completed')], default='pending', max_length=10, verbose_name='Status')),
-                ('special_requests', models.TextField(blank=True, verbose_name='Special Requests')),
-                ('booking_date', models.DateTimeField(auto_now_add=True, verbose_name='Booking Date')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated At')),
-                ('guest', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookings', to='bookings.customuser', verbose_name='Guest')),
-                ('room', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookings', to='bookings.room', verbose_name='Room')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("check_in", models.DateField(verbose_name="Check-in Date")),
+                ("check_out", models.DateField(verbose_name="Check-out Date")),
+                (
+                    "num_adults",
+                    models.IntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(6),
+                        ],
+                        verbose_name="Number of Adults",
+                    ),
+                ),
+                (
+                    "num_children",
+                    models.IntegerField(
+                        default=0,
+                        validators=[
+                            django.core.validators.MinValueValidator(0),
+                            django.core.validators.MaxValueValidator(4),
+                        ],
+                        verbose_name="Number of Children",
+                    ),
+                ),
+                (
+                    "total_price",
+                    models.DecimalField(
+                        decimal_places=2,
+                        max_digits=10,
+                        validators=[django.core.validators.MinValueValidator(0)],
+                        verbose_name="Total Price",
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("pending", "Pending"),
+                            ("confirmed", "Confirmed"),
+                            ("cancelled", "Cancelled"),
+                            ("completed", "Completed"),
+                        ],
+                        default="pending",
+                        max_length=10,
+                        verbose_name="Status",
+                    ),
+                ),
+                (
+                    "special_requests",
+                    models.TextField(blank=True, verbose_name="Special Requests"),
+                ),
+                (
+                    "booking_date",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Booking Date"
+                    ),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="Updated At"),
+                ),
+                (
+                    "guest",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="bookings",
+                        to="bookings.customuser",
+                        verbose_name="Guest",
+                    ),
+                ),
+                (
+                    "room",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="bookings",
+                        to="bookings.room",
+                        verbose_name="Room",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Booking',
-                'verbose_name_plural': 'Bookings',
-                'ordering': ['-booking_date'],
+                "verbose_name": "Booking",
+                "verbose_name_plural": "Bookings",
+                "ordering": ["-booking_date"],
             },
         ),
         migrations.CreateModel(
-            name='RoomImage',
+            name="RoomImage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', models.ImageField(upload_to='room_images/', verbose_name='Image')),
-                ('is_primary', models.BooleanField(default=False, verbose_name='Is Primary Image')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created At')),
-                ('room', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='bookings.room', verbose_name='Room')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "image",
+                    models.ImageField(upload_to="room_images/", verbose_name="Image"),
+                ),
+                (
+                    "is_primary",
+                    models.BooleanField(default=False, verbose_name="Is Primary Image"),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Created At"),
+                ),
+                (
+                    "room",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="images",
+                        to="bookings.room",
+                        verbose_name="Room",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Room Image',
-                'verbose_name_plural': 'Room Images',
-                'ordering': ['-is_primary', '-created_at'],
+                "verbose_name": "Room Image",
+                "verbose_name_plural": "Room Images",
+                "ordering": ["-is_primary", "-created_at"],
             },
         ),
     ]

@@ -1,10 +1,67 @@
-{% extends 'bookings/base.html' %}
+{% extends "bookings/base.html" %}
+{% load static %}
 
-{% block title %}Welcome - Hotel Management System{% endblock %}
+{% block title %}Welcome to Our Hotel{% endblock %}
 
 {% block content %}
-<div class="text-center">
-    <h1 class="text-4xl font-bold text-gray-900 mb-4">Welcome to Hotel Management System</h1>
-    <p class="text-lg text-gray-600">Find and book your perfect room</p>
+<!-- Hero Section -->
+<div class="relative h-[600px] bg-cover bg-center" style="background-image: url('{% static 'images/hero-bg.jpeg' %}');">
+    <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+    <div class="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-white">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 text-center">
+            Welcome to Our Luxury Hotel
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 text-center">
+            Experience comfort and elegance at its finest
+        </p>
+    </div>
 </div>
+
+<!-- Search Section -->
+<div class="container mx-auto px-4 py-8 -mt-24 relative z-10">
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <form hx-get="{% url 'home' %}"
+              hx-target="#room-list"
+              hx-swap="innerHTML"
+              hx-trigger="submit"
+              hx-indicator="#loading"
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">{{ form.check_in.label }}</label>
+                {{ form.check_in }}
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">{{ form.check_out.label }}</label>
+                {{ form.check_out }}
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">{{ form.adults.label }}</label>
+                {{ form.adults }}
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">{{ form.children.label }}</label>
+                {{ form.children }}
+            </div>
+
+            <div class="md:col-span-2 lg:col-span-4 text-center">
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Search Available Rooms
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Room List Section -->
+<div id="room-list" class="container mx-auto px-4 py-8">
+    {% include "bookings/partials/room_list.html" %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
 {% endblock %}
